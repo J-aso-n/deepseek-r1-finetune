@@ -1,6 +1,6 @@
-## deepseek-r1-finetune
+# deepseek-r1-finetune
 
-### 介绍
+## 介绍
 
 基于unsloth和wandb微调deepseek-r1蒸馏大模型。
 
@@ -8,7 +8,7 @@
 
 不使用unsloth官方notebook中的xformers，避免了xformers环境配置的心力憔悴
 
-### 运行
+## 运行
 
 一，登陆huggingface
 
@@ -31,7 +31,7 @@ pip install -r requirements.txt
 python finetune.py
 ```
 
-### 结果
+## 结果
 
 训练：
 
@@ -116,7 +116,7 @@ print(squares)
 This code initializes a dictionary with keys from the `numbers` list and values as the squares of those numbers. The dictionary is then printed to verify its contents.<｜end▁of▁sentence｜>
 ````
 
-### 其他
+## 其他
 
 unsloth：https://github.com/unslothai/unsloth
 
