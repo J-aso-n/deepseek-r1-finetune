@@ -6,8 +6,6 @@
 
 因为deepseek的蒸馏模型是基于Qwen或是llama的，所以可以使用unsloth进行微调
 
-不使用unsloth官方notebook中的xformers，避免了xformers环境配置的心力憔悴
-
 ## 运行
 
 一，登陆huggingface
@@ -27,11 +25,20 @@
 三，运行程序
 
 ```
+pip install --no-deps bitsandbytes accelerate xformers==0.0.29 peft trl triton
+pip install --no-deps cut_cross_entropy unsloth_zoo
+pip install sentencepiece protobuf datasets huggingface_hub hf_transfer
+pip install --no-deps unsloth
+
 pip install -r requirements.txt
 python finetune.py
 ```
 
 ## 结果
+
+依赖：
+
+![3](./pic/3.png)
 
 训练：
 
@@ -40,6 +47,7 @@ python finetune.py
 微调前：
 
 ````
+<response>
 I need to create a Python code that defines a dictionary with keys as numbers and their squares. The input provides a list of numbers. 
 
 First, I'll need to iterate over each number in the list. For each number, I'll compute its square and store it as a key-value pair in the dictionary.
@@ -98,22 +106,41 @@ Alright, I need to create a Python dictionary based on the given list of numbers
 
 First, I'll create an empty dictionary. Then, I'll loop through each number in the list. For each number, I'll calculate its square by multiplying the number by itself. After that, I'll add both the number and its square to the dictionary.
 
-Wait, I need to make sure that the dictionary keys are in the correct format. Each key should be the number itself, and the corresponding value should be the square of that number. So, I'll use an x:x^2 format for each key-value pair.
+Wait, I need to make sure that the dictionary keys are the numbers as strings or integers? Looking at the example, the list is [1, 2, 3, 4, 5], so I'll use the same type as the keys. I'll add each key-value pair to the dictionary.
 
-Let me test this logic. Suppose I have the number 2, then its square is 4. So, in the dictionary, it should be like {2:4}. Similarly, for the number 3, it should be {3:9}, and so on.
+Let me test this step by step. For the number 1, the square is 1. So the key will be '1' and the value will be 1. Similarly, for 2, the square is 4, and so on.
 
-I think that's all I need to do. The code should be straightforward. I'll write the code step by step to ensure it's correct.
+After processing all numbers, the dictionary will have keys as strings and values as integers. But since the original list contains integers, perhaps it's better to have keys as integers for consistency. However, the question didn't specify the type of keys, so I'll proceed with strings as keys.
+
+So, the final dictionary will look like:
+
+{
+'1': 1,
+'2': 4,
+'3': 9,
+'4': 16,
+'5': 25
+}
+
+I think that's the correct approach. Now, I'll write the code to implement this.
+</response>
 </think>
-
-To create a dictionary with keys as the numbers and values as their squares, you can use the following Python code:
 
 ```python
 numbers = [1, 2, 3, 4, 5]
-squares = {x: x**2 for x in numbers}
+squares = {}
+
+for x in numbers:
+    squares[x] = x ** 2
+
 print(squares)
 ```
 
-This code initializes a dictionary with keys from the `numbers` list and values as the squares of those numbers. The dictionary is then printed to verify its contents.<｜end▁of▁sentence｜>
+This code will create a dictionary where each key is a number from the list and each value is the square of that number. The output will be:
+
+```
+{1: 1, 2: 4, 3: 9, 4: 16, 5: 25}
+```<｜end▁of▁sentence｜>
 ````
 
 ## 其他
@@ -121,3 +148,5 @@ This code initializes a dictionary with keys from the `numbers` list and values 
 unsloth：https://github.com/unslothai/unsloth
 
 ​				https://unsloth.ai/blog/deepseek-r1
+
+在unsloth的Qwen notebook基础上修改，建议采用其环境，这样不需要自己去调配：https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/Qwen2.5_(7B)-Alpaca.ipynb
